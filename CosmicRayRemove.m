@@ -1,8 +1,8 @@
 close all;
 clear;
 
-FilePath = 'D:\Programing\Matlab\DataProcess\';
-FileName = 'test';
+FilePath = '';
+FileName = '';
 
 
 data = GetData(FilePath,FileName);
