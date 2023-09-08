@@ -1,0 +1,5 @@
+function Output(OutputPath,Signal1,SampleName1)
+    OutputName = [OutputPath,SampleName1,'.csv'];
+    FinalName = ; 
+    writematrix(Signal1,SampleName1);
+end
