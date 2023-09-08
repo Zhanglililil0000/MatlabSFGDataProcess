@@ -2,9 +2,9 @@
 
 | By Zhang Li, PhD Student, School of Science, Westlake University
 
-This code, basing on Matlab, is used for Sum Frequency Generation Data Processing. 
+This code, based on Matlab, is designed for Sum Frequency Generation Data Processing.
 
-The main program is called DataProcess.m, you can edit this code, filling the path of your data file, and run it to get the data which have removed the cosmic ray and background, and normalized with your referance.
+The primary program is named DataProcess.m. You can modify this code by specifying the path to your data file. When you run it, it will process the data by removing cosmic ray interference and background noise, then normalize it using your reference.
 
-Other codes are functions used in this precess. 
+Additionally, there are other codes that consist of functions utilized in this data processing procedure.
 
