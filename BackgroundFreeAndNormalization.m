@@ -1,8 +1,9 @@
-function data = BackgroundFreeAndNormalization(WorkPath,SampleName,BackgroundName,IRprofile,SamplingTime)
+function data = BackgroundFreeAndNormalization(SamplePath,SampleName,BGPath,BGName,IRprofile,SamplingTime)
 %扣除背景
-    Signal = GetData(WorkPath,SampleName);
-    Background = GetData(WorkPath,BackgroundName);
-    Intensity = Signal(:,3) - Background(:,3);
+    SignalRaw = GetData(SamplePath,SampleName);
+    Signal = AutoCosmicRaysRemove(SignalRaw(:,3));
+    BackgroundRaw = GetData(BGPath,BGName);
+    Background = AutoCosmicRaysRemove(BackgroundRaw(:,3));
+    Intensity = Signal - Background; 
     data = (Intensity./SamplingTime./IRprofile);
-    data = AutoCosmicRaysRemove(data,3);
 end
