@@ -23,6 +23,7 @@ clear;
 [IRBGName, IRBGPath] = uigetfile('.csv','select IR Profile Background'); 
 %输入红外的采集时间; input the sampling time of IR profile
 IRSamplingTime = inputdlg('IR Profile Sampling Time? (Unit: Second)'); 
+IRSamplingTime = cell2mat(IRSamplingTime);
 
 %选择需要处理的数据；select the SFG data
 [SampleName,SamplePath] = uigetfile('.csv','select your SFG result','MultiSelect','on'); 
@@ -30,11 +31,13 @@ IRSamplingTime = inputdlg('IR Profile Sampling Time? (Unit: Second)');
 [BGName,BGPath] = uigetfile('.csv','select the background'); 
 %输入样品的曝光时间；input the sampling time
 SamplingTime = inputdlg('Sampling Time? (Unit: Second)');
+SamplingTime = cell2mat(SamplingTime);
 %获得要处理的样品数
 SampleNumber = numel(SampleName);
 
 %选择输出的路径
-OutputPath = uigetdir(matlabroot,'select output folder');
+OutputPath = 'D:\Programing and Coding\MatlabSFGDataProcess\testdata\Export\';
+%OutputPath = uigetdir('','select output folder');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -55,33 +58,23 @@ VISCenter = 532.14;
 %用于获取IR profile，此处已处理宇宙射线
 IRprofile = GetIRProfile(IRPath,IRName,IRBGPath,IRBGName,IRSamplingTime);
 Wavenumber = GetWavenumber(IRPath,IRName,VISCenter);
-writematrix(Wavenumber,[OutputPath,'Wavenumber.csv']); %输出波数
-writematrix(IRprofile,[OutputPath,'IRprofile.csv']); %输出IRprofile
+writematrix(Wavenumber,[OutputPath,'Wavenumber.csv','overwrite']); %输出波数
+writematrix(IRprofile,[OutputPath,'IRprofile.csv','overwrite']); %输出IRprofile
 
 %处理不同的文件
+i = 1;
 for i = SampleNumber
     clear signal;
-    Signal = BackgroundFreeAndNormalization(SamplePath,SampleName(i),BGPath,BGName,IRprofile,SamplingTime);
-    writematrix(Signal,[OutputPath,SampleName(i)]);
-    print([SampleName(i),'is done']);
+    SampleName{i}
+    Signal = BackgroundFreeAndNormalization(SamplePath,SampleName{i},BGPath,BGName,IRprofile,SamplingTime);
+    writematrix(Signal,[OutputPath,SampleName{i}]);
 end
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-% 
-% %关于BackgroundFreeAndNormalization的函数说明
-% %BackgroundFreeAndNormalization(WorkPath,SampleName,BackgroundName,IRprofile,SamplingTime)有5个输入量
-% %WorkPath是工作路径，BackgroundName是背景名称，IRprofile是红外形状，SamplingTime是采集时间，都在文件最开始进行了定义，这里不用修改
-% %SampleName是样品名称，需要修改
-% Signal1 = BackgroundFreeAndNormalization(WorkPath,SampleName1,BackgroundName,IRprofile,SamplingTime); 
-% Signal2 = BackgroundFreeAndNormalization(WorkPath,SampleName2,BackgroundName,IRprofile,SamplingTime);
-% 
-% %这里波数的计算根据IRProfile进行计算，也不用修改
-% Wavenumber = GetWavenumber(WorkPath,IRprofileName,VISCenter);
-% 
-% 
+
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%图表输出%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % %根据需求修改输出结果
 % 
